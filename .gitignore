@@ -29,6 +29,7 @@ Thumbs.db
 
 # directories
 uploads
+docs/*.md
 
 # csv fles
 *.csv
