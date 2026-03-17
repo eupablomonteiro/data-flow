@@ -17,6 +17,7 @@
     "@dataflow/database": "workspace:*",
     "@dataflow/types": "workspace:*",
     "@dataflow/queue": "workspace:*",
+    "@dataflow/logger": "workspace:*",
     "csv-parse": "^6.1.0",
     "zod": "^4.3.6"
   },
