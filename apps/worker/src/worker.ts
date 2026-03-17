@@ -5,21 +5,35 @@ import {
   FileProcessingJob,
 } from "@dataflow/queue";
 import { FileProcessingService } from "./modules/fileProcessing/services/fileProcessing.service";
+import { UploadRepository } from "./modules/fileProcessing/repositories/upload.repository";
+
+import { logger } from "@dataflow/logger";
+
+const uploadRepository = new UploadRepository();
 
 const worker = new Worker<FileProcessingJob>(
   "file-processing",
   async (job: Job<FileProcessingJob>) => {
-    console.log("Processing job", job.data);
+    logger.info(`Processing job ${job.data.uploadId}`);
 
-    const filePath = job.data.path;
-    const service = new FileProcessingService();
-    const result = await service.execute(filePath);
+    await uploadRepository.updateStatus(job.data.uploadId, "PROCESSING");
 
-    console.log("Rows processed: ", result.processed);
+    try {
+      const service = new FileProcessingService();
+      const result = await service.execute(job.data.path);
+
+      await uploadRepository.markCompleted(job.data.uploadId);
+
+      logger.info(`Rows processed: ${result.processed}`);
+    } catch (error) {
+      await uploadRepository.markFailed(job.data.uploadId);
+      logger.error(`Processing failed: ${error}`);
+      throw error;
+    }
   },
   {
     connection: redisConnection,
   },
 );
 
-console.log("Worker started");
+logger.info("Worker started");

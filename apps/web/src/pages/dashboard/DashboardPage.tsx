@@ -12,8 +12,10 @@ export function DashboardPage() {
   const totalOrders =
     data?.salesPerDay.reduce((acc, item) => acc + item.total, 0) ?? 0;
 
+  console.log(data);
+
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-8 space-y-6 text-white">
       <h1 className="text-3xl font-bold">Sales Dashboard</h1>
 
       <div className="grid grid-cols-4 gap-4">

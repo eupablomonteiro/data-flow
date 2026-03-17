@@ -4,7 +4,6 @@ export class AnalyticsService {
   private repo = new AnalyticsRepository();
 
   async execute(): Promise<any> {
-
     const [revenueByCountry, topProducts, salesPerDay, categoryPerformance] =
       await Promise.all([
         this.repo.revenueByCountry(),
