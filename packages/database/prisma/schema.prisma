@@ -41,13 +41,19 @@ model Sale {
 }
 
 model Upload {
-  id          String       @id @default(uuid())
-  filename    String
-  filepath    String
-  status      UploadStatus @default(PENDING)
+  id       String       @id @default(uuid())
+  filename String
+  filepath String
+  status   UploadStatus @default(PENDING)
+
+  totalRows     Int?
+  processedRows Int?
+  successRows   Int?
+  errorRows     Int?
+
+  startedAt   DateTime?
   processedAt DateTime?
 
   createdAt DateTime @default(now())
-
-  sales Sale[]
+  sales     Sale[]
 }

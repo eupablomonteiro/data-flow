@@ -21,4 +21,26 @@ export class UploadRepository {
       data: { status: UploadStatus.FAILED, processedAt: new Date() },
     });
   }
+
+  async updateMetrics(
+    id: string,
+    data: {
+      totalRows?: number;
+      processedRows?: number;
+      successRows?: number;
+      errorRows?: number;
+    },
+  ) {
+    await prisma.upload.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async setStartedAt(id: string) {
+    await prisma.upload.update({
+      where: { id },
+      data: { startedAt: new Date() },
+    });
+  }
 }
