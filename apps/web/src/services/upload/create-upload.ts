@@ -1,6 +1,9 @@
 import { api } from "@/lib/api/client";
+import { CreateUploadResponseDTO } from "@dataflow/types";
 
-export async function createUpload(file: File) {
+export async function createUpload(
+  file: File,
+): Promise<CreateUploadResponseDTO> {
   const formData = new FormData();
   formData.append("file", file);
 

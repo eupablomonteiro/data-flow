@@ -2,10 +2,18 @@
   "name": "@dataflow/database",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/client.js",
-  "types": "src/client.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./client": "./dist/client.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "prisma generate && tsc -b",
+    "dev": "prisma generate && tsc -b -w --preserveWatchOutput",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
     "studio": "prisma studio"
@@ -23,6 +31,7 @@
     "prisma": "^7.5.0"
   },
   "devDependencies": {
+    "@types/pg": "^8.15.6",
     "tsx": "^4.21.0"
   }
 }

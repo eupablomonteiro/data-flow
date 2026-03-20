@@ -1,20 +1,20 @@
-import { prisma } from "@dataflow/database";
+import { getPrisma } from "@dataflow/database";
 
 export class UploadRepository {
   create(data: { filename: string; filepath: string }) {
-    return prisma.upload.create({
+    return getPrisma().upload.create({
       data,
     });
   }
 
   findById(id: string) {
-    return prisma.upload.findUnique({
+    return getPrisma().upload.findUnique({
       where: { id },
     });
   }
 
   findAll() {
-    return prisma.upload.findMany({
+    return getPrisma().upload.findMany({
       orderBy: { createdAt: "desc" },
     });
   }

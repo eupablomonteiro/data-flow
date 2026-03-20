@@ -1,18 +1,23 @@
 import { Queue } from "bullmq";
-import { redisConnection } from "../connection";
+import { getRedis } from "../connection";
 import { FileProcessingJob } from "../jobs/fileProcessing.job";
 
-export const fileProcessingQueue = new Queue<FileProcessingJob>(
-  "file-processing",
-  {
-    connection: redisConnection,
-    defaultJobOptions: {
-      attempts: 3,
-      backoff: {
-        type: "exponential",
-        delay: 3000,
+let queue: Queue<FileProcessingJob> | null = null;
+
+export function getFileProcessingQueue() {
+  if (!queue) {
+    queue = new Queue<FileProcessingJob>("file-processing", {
+      connection: getRedis(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 3000,
+        },
+        removeOnComplete: true,
       },
-      removeOnComplete: true,
-    },
-  },
-);
+    });
+  }
+
+  return queue;
+}

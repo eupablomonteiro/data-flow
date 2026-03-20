@@ -1,13 +1,14 @@
 import {
-  redisConnection,
+  getRedis,
   Worker,
   Job,
   FileProcessingJob,
 } from "@dataflow/queue";
+import { logger } from "@dataflow/logger";
+import { UploadStatus } from "@dataflow/database";
+
 import { FileProcessingService } from "./modules/fileProcessing/services/fileProcessing.service";
 import { UploadRepository } from "./modules/fileProcessing/repositories/upload.repository";
-
-import { logger } from "@dataflow/logger";
 
 const uploadRepository = new UploadRepository();
 
@@ -18,7 +19,7 @@ const worker = new Worker<FileProcessingJob>(
     logger.info(`Processing job ${uploadId}`);
 
     try {
-      await uploadRepository.updateStatus(uploadId, "PROCESSING");
+      await uploadRepository.updateStatus(uploadId, UploadStatus.PROCESSING);
       await uploadRepository.setStartedAt(uploadId);
       const service = new FileProcessingService();
       const result = await service.execute(job.data.path, uploadId);
@@ -33,7 +34,7 @@ const worker = new Worker<FileProcessingJob>(
     }
   },
   {
-    connection: redisConnection,
+    connection: getRedis(),
   },
 );
 

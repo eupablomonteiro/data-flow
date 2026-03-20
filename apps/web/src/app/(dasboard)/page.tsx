@@ -16,17 +16,19 @@ export default function Page() {
     setUploadId(response.uploadId);
   }
 
+  const percentage = data?.progress.percentage ?? 0;
+
   return (
     <div className="p-6">
       <input type="file" onChange={handleUpload} />
 
-      {isLoading ? <p>Carregando...</p> : <p>{data?.status}</p>}
+      {isLoading && <p>Carregando...</p>}
 
       {data && (
         <div className="w-36 h-36 mt-4 bg-amber-400">
           <p>ID: {data.id}</p>
           <p>Status: {data.status}</p>
-          <p>Progresso: {data.progress?.percentage ?? 0}</p>
+          <p>Progresso: {percentage}</p>
         </div>
       )}
     </div>

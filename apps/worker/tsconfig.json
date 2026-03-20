@@ -3,13 +3,15 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
+    "composite": true,
   },
   "references": [
     { "path": "../../packages/types" },
     { "path": "../../packages/config" },
     { "path": "../../packages/database" },
     { "path": "../../packages/logger" },
-    { "path": "../../packages/queue" }
+    { "path": "../../packages/queue" },
+    { "path": "../../packages/validation" }
   ],
   "include": ["src"]
 }

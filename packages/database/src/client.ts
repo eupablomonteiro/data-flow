@@ -2,13 +2,23 @@ import { env } from "@dataflow/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
-declare global {
-  var prisma: PrismaClient | undefined;
-}
+const globalForPrisma = globalThis as unknown as {
+  prisma?: PrismaClient;
+};
 
 const adapter = new PrismaPg({ connectionString: env.DATABASE_URL });
-export const prisma = global.prisma ?? new PrismaClient({ adapter });
 
-if (env.NODE_ENV !== "production") {
-  global.prisma = prisma;
+let prismaInstance: PrismaClient | null = null;
+
+export function getPrisma() {
+  if (!prismaInstance) {
+    prismaInstance =
+      globalForPrisma.prisma ?? new PrismaClient({ adapter, log: ["error"] });
+  }
+
+  if (env.NODE_ENV !== "production") {
+    globalForPrisma.prisma = prismaInstance;
+  }
+
+  return prismaInstance;
 }

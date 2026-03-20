@@ -1,5 +1,5 @@
-import { prisma } from "@dataflow/database";
-import { SaleType } from "@dataflow/types";
+import { getPrisma } from "@dataflow/database";
+import { SaleType } from "@dataflow/validation";
 
 export class SaleRepository {
   async createMany(rows: SaleType[]) {
@@ -15,7 +15,7 @@ export class SaleRepository {
       total: row.price * row.quantity,
     }));
 
-    await prisma.sale.createMany({
+    await getPrisma().sale.createMany({
       data,
     });
   }

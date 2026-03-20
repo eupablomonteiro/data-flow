@@ -1,8 +1,8 @@
 import { Upload } from "@dataflow/database";
-import { UploadDTO } from "./upload.dto";
+import type { UploadResponseDTO } from "@dataflow/types";
 
 export class UploadPresenter {
-  static toHTTP(upload: Upload): UploadDTO {
+  static toHTTP(upload: Upload): UploadResponseDTO {
     const percentage =
       upload.totalRows && upload.processedRows
         ? Math.round((upload.processedRows / upload.totalRows) * 100)
@@ -19,12 +19,12 @@ export class UploadPresenter {
         errorRows: upload.errorRows,
         percentage,
       },
-      processedAt: upload.processedAt,
-      createdAt: upload.createdAt,
+      processedAt: upload.processedAt?.toISOString(),
+      createdAt: upload.createdAt.toISOString(),
     };
   }
 
-  static toHTTPList(uploads: Upload[]): UploadDTO[] {
+  static toHTTPList(uploads: Upload[]): UploadResponseDTO[] {
     return uploads.map((upload) => this.toHTTP(upload));
   }
 }

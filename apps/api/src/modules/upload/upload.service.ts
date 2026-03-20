@@ -1,5 +1,5 @@
 import path from "path";
-import { fileProcessingQueue } from "@dataflow/queue";
+import { getFileProcessingQueue } from "@dataflow/queue";
 import { UploadRepository } from "./upload.repository";
 import { AppError } from "../../errors/AppError";
 
@@ -14,7 +14,7 @@ export class CreateUploadService {
       filepath: absolutePath,
     });
 
-    const job = await fileProcessingQueue.add("fileProcessingJob", {
+    const job = await getFileProcessingQueue().add("fileProcessingJob", {
       uploadId: upload.id,
       filename: file.filename,
       path: absolutePath,

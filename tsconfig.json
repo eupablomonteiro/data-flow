@@ -6,6 +6,7 @@
     { "path": "packages/logger" },
     { "path": "packages/database" },
     { "path": "packages/queue" },
+    { "path": "packages/validation" },
     { "path": "apps/api" },
     { "path": "apps/worker" }
   ]

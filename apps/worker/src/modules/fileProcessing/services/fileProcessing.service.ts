@@ -1,5 +1,5 @@
 import { createCsvStream } from "../../../lib/csvParser";
-import { saleSchema } from "@dataflow/types";
+import { saleSchema, type SaleType } from "@dataflow/validation";
 import { SaleRepository } from "../repositories/sale.repository";
 import { UploadRepository } from "../repositories/upload.repository";
 
@@ -7,13 +7,15 @@ const BATCH_SIZE = 500;
 const UPDATE_INTERVAL = 1000;
 
 export class FileProcessingService {
-  private saleRepository = new SaleRepository();
-  private uploadRepository = new UploadRepository();
+  constructor(
+    private saleRepository = new SaleRepository(),
+    private uploadRepository = new UploadRepository(),
+  ) {}
 
   async execute(filePath: string, uploadId: string) {
     const stream = createCsvStream(filePath);
 
-    let batch: any[] = [];
+    let batch: SaleType[] = [];
     let processedRows = 0;
     let successRows = 0;
     let errorRows = 0;
