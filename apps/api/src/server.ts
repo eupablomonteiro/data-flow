@@ -1,21 +1,26 @@
 import { env } from "@dataflow/config";
-import { errorMiddleware } from "./middleware/error.middleware";
+import { connectDb } from "@dataflow/database";
+import { connectRedis } from "@dataflow/queue";
+import { app } from "./app";
 
-import express from "express";
-import cors from "cors";
+async function bootstrap() {
+  try {
+    console.log("Starting application bootstrap...");
 
-import { router } from "./routes";
+    await connectDb();
+    await connectRedis();
 
-const app = express();
+    const PORT = env.PORT;
 
-app.use(cors());
-app.use(express.json());
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Bootstrap failed:", error);
+    if (env.NODE_ENV === "production") {
+      process.exit(1);
+    }
+  }
+}
 
-app.use("/api", router);
-app.use(errorMiddleware);
-
-const PORT = env.PORT;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+bootstrap();

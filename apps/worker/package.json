@@ -5,7 +5,7 @@
   "main": "src/worker.ts",
   "scripts": {
     "dev": "tsx watch src/worker.ts",
-    "build": "tsc -b",
+    "build": "tsc",
     "start": "node dist/worker.js"
   },
   "keywords": [],
@@ -18,8 +18,8 @@
     "@dataflow/types": "workspace:*",
     "@dataflow/queue": "workspace:*",
     "@dataflow/logger": "workspace:*",
-    "csv-parse": "^6.1.0",
-    "zod": "^4.3.6"
+    "@dataflow/validation": "workspace:*",
+    "csv-parse": "^6.1.0"
   },
   "devDependencies": {
     "tsx": "^4.21.0"

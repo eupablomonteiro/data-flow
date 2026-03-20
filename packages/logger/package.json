@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "dev": "tsc -b -w --preserveWatchOutput"
   },
   "keywords": [],
   "author": "",

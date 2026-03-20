@@ -1,8 +1,23 @@
-import { prisma } from "@dataflow/database";
+import { getPrisma } from "@dataflow/database";
+import { SalesPerDay } from "@dataflow/types";
 
 export class AnalyticsRepository {
-  revenueByCountry(): Promise<any> {
-    return prisma.sale.groupBy({
+  async getTotalRevenue() {
+    const result = await getPrisma().sale.aggregate({
+      _sum: {
+        total: true,
+      },
+    });
+
+    return result._sum.total ?? 0;
+  }
+
+  async getTotalSales() {
+    return getPrisma().sale.count();
+  }
+
+  async revenueByCountry() {
+    return getPrisma().sale.groupBy({
       by: ["country"],
       _sum: {
         total: true,
@@ -10,8 +25,8 @@ export class AnalyticsRepository {
     });
   }
 
-  topProducts(): Promise<any> {
-    return prisma.sale.groupBy({
+  async topProducts() {
+    return getPrisma().sale.groupBy({
       by: ["product"],
       _sum: {
         quantity: true,
@@ -25,20 +40,16 @@ export class AnalyticsRepository {
     });
   }
 
-  salesPerDay(): Promise<any> {
-    return prisma.sale.groupBy({
-      by: ["date"],
-      _sum: {
-        total: true,
-      },
-      orderBy: {
-        date: "asc",
-      },
-    });
+  async salesPerDay(): Promise<SalesPerDay[]> {
+    return getPrisma().$queryRawUnsafe(`
+        SELECT DATE("date") as date,
+        SUM(total) as total
+        FROM "Sale" GROUP BY DATE("date") ORDER BY date ASC
+      `);
   }
 
-  categoryPerformance(): Promise<any> {
-    return prisma.sale.groupBy({
+  async categoryPerformance() {
+    return getPrisma().sale.groupBy({
       by: ["category"],
       _sum: {
         total: true,
