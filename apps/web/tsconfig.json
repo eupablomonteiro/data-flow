@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.mjs"
-  ],
+, ".next/types/app/(dasboard)/page.tsx"  ],
   "exclude": [
     "node_modules"
   ]

@@ -1,9 +1,4 @@
-import {
-  getRedis,
-  Worker,
-  Job,
-  FileProcessingJob,
-} from "@dataflow/queue";
+import { getRedis, Worker, Job, FileProcessingJob } from "@dataflow/queue";
 import { logger } from "@dataflow/logger";
 import { UploadStatus } from "@dataflow/database";
 

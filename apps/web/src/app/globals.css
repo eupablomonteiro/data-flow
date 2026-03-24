@@ -1,3 +1,102 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+
+@theme inline {
+    /* ═══════════════════════════════════════════════
+       REGRA 60-30-10 — Design Palette
+       60% Dominante: Slate Deep (backgrounds)
+       30% Secundária: Slate/Gray (surfaces, text)
+       10% Destaque: Indigo→Violet (actions, accents)
+       ═══════════════════════════════════════════════ */
+
+    /* 60% — Dominant (backgrounds, large areas) */
+    --color-df-bg-deep: #0B1120;
+    --color-df-bg-primary: #0F172A;
+    --color-df-bg-secondary: #1E293B;
+
+    /* 30% — Secondary (cards, borders, muted text) */
+    --color-df-surface: #334155;
+    --color-df-border: #475569;
+    --color-df-muted: #94A3B8;
+    --color-df-text: #CBD5E1;
+    --color-df-text-strong: #E2E8F0;
+    --color-df-white: #F8FAFC;
+
+    /* 10% — Accent (CTAs, links, highlights) */
+    --color-df-accent: #6366F1;
+    --color-df-accent-hover: #818CF8;
+    --color-df-accent-light: #A5B4FC;
+    --color-df-accent-glow: #6366F133;
+    --color-df-accent-violet: #8B5CF6;
+
+    /* Semantic */
+    --color-df-success: #22C55E;
+    --color-df-warning: #F59E0B;
+    --color-df-error: #EF4444;
+    --color-df-info: #3B82F6;
+
+    /* Landing page (light sections) */
+    --color-df-light-bg: #F8FAFC;
+    --color-df-light-surface: #FFFFFF;
+    --color-df-light-text: #0F172A;
+    --color-df-light-muted: #64748B;
+}
+
+/* ═══════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════ */
+
+/* Glassmorphism */
+@utility glass {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+@utility glass-light {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+/* Gradient text utility */
+@utility gradient-text {
+    background: linear-gradient(135deg, #6366F1, #8B5CF6, #A78BFA);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Glow effects */
+@utility glow-accent {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.15),
+                0 0 60px rgba(99, 102, 241, 0.05);
+}
+
+@utility glow-accent-strong {
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.25),
+                0 0 80px rgba(99, 102, 241, 0.1);
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--color-df-bg-primary);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--color-df-surface);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-df-border);
+}
