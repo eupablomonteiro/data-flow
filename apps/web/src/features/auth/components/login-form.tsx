@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { Loader2, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { FaGithub, FaGoogle } from "react-icons/fa";
+import { loginWithGithub, loginWithGoogle } from "@/app/actions/auth";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Insira um e-mail válido" }),
@@ -23,6 +25,9 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  
+  const [isLoadingGithub, setIsLoadingGithub] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
 
   const {
     register,
@@ -45,89 +50,144 @@ export function LoginForm() {
     setIsLoading(false);
   }
 
+  const handleGithubLogin = async () => {
+    setIsLoadingGithub(true);
+    await loginWithGithub();
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoadingGoogle(true);
+    await loginWithGoogle();
+  };
+
+  const isFormDisabled = isLoading || isLoadingGithub || isLoadingGoogle;
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-6">
-      <div className="space-y-2">
-        <Label htmlFor="email" className="text-df-text text-sm">
-          E-mail
-        </Label>
-        <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-df-muted" />
-          <Input
-            id="email"
-            placeholder="exemplo@email.com"
-            type="email"
-            disabled={isLoading}
-            className="pl-10 bg-df-bg-secondary/80 border-df-surface/40 text-df-white placeholder:text-df-muted/50 focus:border-df-accent focus:ring-df-accent/20 h-11"
-            {...register("email")}
-          />
-        </div>
-        {errors.email && (
-          <p className="text-sm text-df-error">{errors.email.message}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="password" className="text-df-text text-sm">
-            Senha
+    <div className="space-y-4 pt-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-df-text text-sm">
+            E-mail
           </Label>
-          <Button
-            variant="link"
-            className="h-auto p-0 text-xs font-normal text-df-accent hover:text-df-accent-hover"
-            type="button"
-          >
-            Esqueceu a senha?
-          </Button>
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-df-muted" />
+            <Input
+              id="email"
+              placeholder="exemplo@email.com"
+              type="email"
+              disabled={isFormDisabled}
+              className="pl-10 bg-df-bg-secondary/80 border-df-surface/40 text-df-white placeholder:text-df-muted/50 focus:border-df-accent focus:ring-df-accent/20 h-11"
+              {...register("email")}
+            />
+          </div>
+          {errors.email && (
+            <p className="text-sm text-df-error">{errors.email.message}</p>
+          )}
         </div>
-        <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-df-muted" />
-          <Input
-            id="password"
-            type={showPassword ? "text" : "password"}
-            disabled={isLoading}
-            className="pl-10 pr-10 bg-df-bg-secondary/80 border-df-surface/40 text-df-white placeholder:text-df-muted/50 focus:border-df-accent focus:ring-df-accent/20 h-11"
-            {...register("password")}
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password" className="text-df-text text-sm">
+              Senha
+            </Label>
+            <Button
+              variant="link"
+              className="h-auto p-0 text-xs font-normal text-df-accent hover:text-df-accent-hover"
+              type="button"
+            >
+              Esqueceu a senha?
+            </Button>
+          </div>
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-df-muted" />
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              disabled={isFormDisabled}
+              className="pl-10 pr-10 bg-df-bg-secondary/80 border-df-surface/40 text-df-white placeholder:text-df-muted/50 focus:border-df-accent focus:ring-df-accent/20 h-11"
+              {...register("password")}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-df-muted hover:text-df-text transition-colors"
+            >
+              {showPassword ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
+            </button>
+          </div>
+          {errors.password && (
+            <p className="text-sm text-df-error">{errors.password.message}</p>
+          )}
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="remember"
+            className="border-df-surface/60 data-[state=checked]:bg-df-accent data-[state=checked]:border-df-accent"
+            {...register("rememberMe")}
           />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-df-muted hover:text-df-text transition-colors"
+          <Label
+            htmlFor="remember"
+            className="text-sm font-medium text-df-muted leading-none cursor-pointer"
           >
-            {showPassword ? (
-              <EyeOff className="w-4 h-4" />
-            ) : (
-              <Eye className="w-4 h-4" />
-            )}
-          </button>
+            Lembrar de mim
+          </Label>
         </div>
-        {errors.password && (
-          <p className="text-sm text-df-error">{errors.password.message}</p>
-        )}
-      </div>
 
-      <div className="flex items-center space-x-2">
-        <Checkbox
-          id="remember"
-          className="border-df-surface/60 data-[state=checked]:bg-df-accent data-[state=checked]:border-df-accent"
-          {...register("rememberMe")}
-        />
-        <Label
-          htmlFor="remember"
-          className="text-sm font-medium text-df-muted leading-none cursor-pointer"
+        <Button
+          className="w-full bg-df-accent hover:bg-df-accent-hover text-white font-semibold h-11 rounded-lg transition-all hover:shadow-lg hover:shadow-df-accent/25 cursor-pointer"
+          type="submit"
+          disabled={isFormDisabled}
         >
-          Lembrar de mim
-        </Label>
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Entrar
+        </Button>
+      </form>
+
+      <div className="relative my-6">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-df-surface/40"></div>
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-df-bg-secondary px-2 text-df-muted">Ou</span>
+        </div>
       </div>
 
-      <Button
-        className="w-full bg-df-accent hover:bg-df-accent-hover text-white font-semibold h-11 rounded-lg transition-all hover:shadow-lg hover:shadow-df-accent/25 cursor-pointer"
-        type="submit"
-        disabled={isLoading}
-      >
-        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        Entrar
-      </Button>
-    </form>
+      <div className="flex flex-col gap-3">
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full h-11 bg-df-bg-secondary border-df-surface/40 text-df-white hover:bg-df-surface/20 transition-all cursor-pointer"
+          onClick={handleGithubLogin}
+          disabled={isFormDisabled}
+        >
+          {isLoadingGithub ? (
+            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+          ) : (
+            <FaGithub className="mr-2 h-5 w-5" />
+          )}
+          Continuar com GitHub
+        </Button>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full h-11 bg-df-bg-secondary border-df-surface/40 text-df-white hover:bg-df-surface/20 transition-all cursor-pointer"
+          onClick={handleGoogleLogin}
+          disabled={isFormDisabled}
+        >
+          {isLoadingGoogle ? (
+            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+          ) : (
+            <FaGoogle className="mr-2 h-5 w-5 text-red-500" />
+          )}
+          Continuar com Google
+        </Button>
+      </div>
+    </div>
   );
 }

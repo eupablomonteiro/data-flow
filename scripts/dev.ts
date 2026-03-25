@@ -23,7 +23,7 @@ async function bootstrap() {
     console.log("✅ Infraestrutura pronta!");
     console.log("\n3️⃣  Iniciando Aplicações (Web, API, Worker)...\n");
 
-    const turbo = spawn("pnpm", ["turbo", "run", "dev", "--ui=stream"], {
+    const turbo = spawn("pnpm", ["turbo", "run", "dev"], {
       stdio: "inherit",
       shell: true,
     });

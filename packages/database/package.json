@@ -4,6 +4,10 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.32.1",
   "exports": {
     ".": "./dist/index.js",
     "./client": "./dist/client.js"
@@ -18,10 +22,6 @@
     "migrate": "prisma migrate dev",
     "studio": "prisma studio"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.32.1",
   "dependencies": {
     "@dataflow/config": "workspace:*",
     "@prisma/adapter-pg": "^7.5.0",

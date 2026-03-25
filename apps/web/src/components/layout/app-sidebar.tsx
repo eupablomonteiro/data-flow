@@ -26,6 +26,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { useAuth } from "@/features/auth/hooks/use-auth";
+
 const menuItems = [
   {
     title: "Dashboard",
@@ -51,6 +53,7 @@ const menuItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { user, logout, isLoggingOut } = useAuth();
 
   return (
     <Sidebar className="border-r border-df-surface/20 bg-df-bg-deep">
@@ -93,7 +96,7 @@ export function AppSidebar() {
                       }`}
                     >
                       <Link
-                        href={item.href as any}
+                        href={item.href}
                         className="flex items-center gap-3 px-3 py-2.5"
                       >
                         <item.icon
@@ -119,15 +122,19 @@ export function AppSidebar() {
       <SidebarFooter className="p-3 border-t border-df-surface/15 bg-df-bg-deep">
         <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-df-surface/15 transition-colors cursor-pointer">
           <Avatar className="w-8 h-8">
-            <AvatarFallback className="bg-df-accent/20 text-df-accent text-xs font-bold">
-              PM
+            <AvatarFallback className="bg-df-accent/20 text-df-accent text-xs font-bold uppercase">
+              {user?.name?.substring(0, 2) ||
+                user?.email?.substring(0, 2) ||
+                "U"}
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
             <p className="text-df-text text-sm font-medium truncate">
-              Pablo Monteiro
+              {user?.name || "Usuário"}
             </p>
-            <p className="text-df-muted text-xs truncate">pablo@dataflow.dev</p>
+            <p className="text-df-muted text-xs truncate">
+              {user?.email || "..."}
+            </p>
           </div>
           <ChevronUp className="w-4 h-4 text-df-muted" />
         </div>
@@ -135,15 +142,16 @@ export function AppSidebar() {
         <div className="flex gap-1 mt-1">
           <button className="flex-1 flex items-center justify-center gap-2 p-2 rounded-lg text-df-muted hover:text-df-text hover:bg-df-surface/15 transition-colors text-xs">
             <Settings className="w-3.5 h-3.5" />
-            Configurações
+            Config
           </button>
-          <Link
-            href="/login"
-            className="flex-1 flex items-center justify-center gap-2 p-2 rounded-lg text-df-muted hover:text-df-error hover:bg-df-error/10 transition-colors text-xs"
+          <button
+            onClick={logout}
+            disabled={isLoggingOut}
+            className="flex-1 flex items-center justify-center gap-2 p-2 rounded-lg text-df-muted hover:text-df-error hover:bg-df-error/10 transition-colors text-xs disabled:opacity-50"
           >
             <LogOut className="w-3.5 h-3.5" />
-            Sair
-          </Link>
+            {isLoggingOut ? "Saindo..." : "Sair"}
+          </button>
         </div>
       </SidebarFooter>
     </Sidebar>

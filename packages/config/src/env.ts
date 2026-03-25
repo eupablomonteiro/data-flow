@@ -17,6 +17,17 @@ const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
+
+  GITHUB_CLIENT_ID: z.string(),
+  GITHUB_CLIENT_SECRET: z.string(),
+  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
+  GOOGLE_REDIRECT_URI_CALLBACK: z.string().url(),
+
+  AUTH_REDIRECT_URL: z.string().url(),
+
+  JWT_PRIVATE_KEY: z.string().transform((val) => val.replace(/\\n/g, "\n")),
+  JWT_PUBLIC_KEY: z.string().transform((val) => val.replace(/\\n/g, "\n")),
 });
 
 export function validateEnv() {
