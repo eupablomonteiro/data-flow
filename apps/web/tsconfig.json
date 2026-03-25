@@ -16,6 +16,45 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
+      "@dataflow/config": [
+        "../../packages/config/src/index.ts"
+      ],
+      "@dataflow/config/*": [
+        "../../packages/config/src/*"
+      ],
+      "@dataflow/database": [
+        "../../packages/database/src/index.ts"
+      ],
+      "@dataflow/database/client": [
+        "../../packages/database/src/client.ts"
+      ],
+      "@dataflow/database/*": [
+        "../../packages/database/src/*"
+      ],
+      "@dataflow/logger": [
+        "../../packages/logger/src/index.ts"
+      ],
+      "@dataflow/logger/*": [
+        "../../packages/logger/src/*"
+      ],
+      "@dataflow/queue": [
+        "../../packages/queue/src/index.ts"
+      ],
+      "@dataflow/queue/*": [
+        "../../packages/queue/src/*"
+      ],
+      "@dataflow/types": [
+        "../../packages/types/src/index.ts"
+      ],
+      "@dataflow/types/*": [
+        "../../packages/types/src/*"
+      ],
+      "@dataflow/validation": [
+        "../../packages/validation/src/index.ts"
+      ],
+      "@dataflow/validation/*": [
+        "../../packages/validation/src/*"
+      ],
       "@/*": [
         "./src/*"
       ]
@@ -34,7 +73,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.mjs"
-, ".next/types/app/(dasboard)/page.tsx"  ],
+  ],
   "exclude": [
     "node_modules"
   ]

@@ -77,7 +77,10 @@ export function RevenueChart({ data, isLoading }: RevenueChartProps) {
                 color: "#E2E8F0",
                 fontSize: 12,
               }}
-              formatter={(value: any) => [formatCurrency(value as number), "Receita"]}
+              formatter={(value: unknown) => [
+                formatCurrency(Number(value ?? 0)),
+                "Receita",
+              ]}
             />
             <Bar
               dataKey="total"

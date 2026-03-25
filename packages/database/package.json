@@ -9,14 +9,18 @@
   "license": "ISC",
   "packageManager": "pnpm@10.32.1",
   "exports": {
-    ".": "./dist/index.js",
-    "./client": "./dist/client.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "development": "./src/index.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "prisma generate && tsc -b",
+    "build": "prisma generate && tsc -b --force",
     "dev": "prisma generate && tsc -b -w --preserveWatchOutput",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
@@ -31,7 +35,6 @@
     "prisma": "^7.5.0"
   },
   "devDependencies": {
-    "@types/pg": "^8.15.6",
-    "tsx": "^4.21.0"
+    "@types/pg": "^8.15.6"
   }
 }

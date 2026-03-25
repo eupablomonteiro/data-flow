@@ -23,10 +23,21 @@ async function bootstrap() {
     console.log("✅ Infraestrutura pronta!");
     console.log("\n3️⃣  Iniciando Aplicações (Web, API, Worker)...\n");
 
-    const turbo = spawn("pnpm", ["turbo", "run", "dev"], {
+    const turbo = spawn(
+      "pnpm",
+      [
+        "turbo",
+        "run",
+        "dev",
+        "--filter=web",
+        "--filter=@dataflow/api",
+        "--filter=@dataflow/worker",
+      ],
+      {
       stdio: "inherit",
       shell: true,
-    });
+      },
+    );
 
     turbo.on("exit", (code) => process.exit(code ?? 0));
   } catch (error) {

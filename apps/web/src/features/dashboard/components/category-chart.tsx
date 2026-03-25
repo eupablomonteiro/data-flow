@@ -74,8 +74,8 @@ export function CategoryChart({ data, isLoading }: CategoryChartProps) {
                   color: "#E2E8F0",
                   fontSize: 12,
                 }}
-                formatter={(value: any) => [
-                  formatCurrency(value as number),
+                formatter={(value: unknown) => [
+                  formatCurrency(Number(value ?? 0)),
                   "Receita",
                 ]}
               />

@@ -69,8 +69,8 @@ export function TopProductsChart({ data, isLoading }: TopProductsChartProps) {
                 color: "#E2E8F0",
                 fontSize: 12,
               }}
-              formatter={(value: any) => [
-                new Intl.NumberFormat("pt-BR").format(value),
+              formatter={(value: unknown) => [
+                new Intl.NumberFormat("pt-BR").format(Number(value ?? 0)),
                 "Quantidade",
               ]}
             />

@@ -25,10 +25,11 @@ import { LuDatabaseZap } from "react-icons/lu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { Route } from "next";
 
 import { useAuth } from "@/features/auth/hooks/use-auth";
 
-const menuItems = [
+const menuItems: { title: string; icon: typeof LayoutDashboard; href: Route }[] = [
   {
     title: "Dashboard",
     icon: LayoutDashboard,

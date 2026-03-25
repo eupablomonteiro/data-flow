@@ -2,10 +2,10 @@
   "name": "@dataflow/worker",
   "version": "1.0.0",
   "description": "",
-  "main": "src/worker.ts",
+  "main": "dist/worker.js",
   "scripts": {
     "dev": "tsx watch src/worker.ts",
-    "build": "tsc",
+    "build": "tsc -b --force",
     "start": "node dist/worker.js"
   },
   "keywords": [],

@@ -77,8 +77,11 @@ export function SalesChart({ data, isLoading }: SalesChartProps) {
                 color: "#E2E8F0",
                 fontSize: 12,
               }}
-              labelFormatter={(label: any) => formatDate(label as string)}
-              formatter={(value: any) => [formatCurrency(value as number), "Total"]}
+              labelFormatter={(label: unknown) => formatDate(String(label ?? ""))}
+              formatter={(value: unknown) => [
+                formatCurrency(Number(value ?? 0)),
+                "Total",
+              ]}
             />
             <Area
               type="monotone"

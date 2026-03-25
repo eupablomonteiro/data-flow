@@ -1,5 +1,5 @@
-import { env } from "@dataflow/config";
 import { defineConfig } from "@prisma/config";
+import { env } from "@dataflow/config";
 
 export default defineConfig({
   schema: "./prisma/schema.prisma",
