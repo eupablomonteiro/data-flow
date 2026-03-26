@@ -4,7 +4,7 @@ import React from "react";
 import { AuthTabs } from "@/features/auth/components/auth-tabs";
 import { AuthBackground } from "@/features/auth/components/auth-background";
 import { motion } from "framer-motion";
-import { LuDatabaseZap } from "react-icons/lu";
+import { Database } from "lucide-react";
 import Link from "next/link";
 import { ArrowLeft, Shield, Zap, BarChart3 } from "lucide-react";
 
@@ -51,7 +51,7 @@ const LoginPage = () => {
           {/* Logo */}
           <div className="flex items-center gap-3 mb-8">
             <div className="relative">
-              <LuDatabaseZap className="w-10 h-10 text-white bg-df-accent rounded-xl p-2" />
+              <Database className="w-10 h-10 text-white bg-df-accent rounded-xl p-2" />
               <div className="absolute inset-0 bg-df-accent rounded-xl blur-lg opacity-40" />
             </div>
             <h1 className="text-3xl font-bold text-df-white">
@@ -117,7 +117,7 @@ const LoginPage = () => {
             Voltar
           </Link>
           <div className="flex items-center gap-2.5">
-            <LuDatabaseZap className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5" />
+            <Database className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5" />
             <h1 className="text-2xl font-bold text-df-white">
               Data<span className="gradient-text">Flow</span>
             </h1>

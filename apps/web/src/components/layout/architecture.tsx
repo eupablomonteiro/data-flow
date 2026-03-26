@@ -4,17 +4,12 @@ import React from "react";
 import { motion } from "framer-motion";
 
 // Icons
-import { FaReact } from "react-icons/fa6";
-import { FaShieldAlt } from "react-icons/fa";
-import { FaServer } from "react-icons/fa6";
-import { SiTurborepo, SiPostgresql } from "react-icons/si";
-import { PiPlugsConnectedFill } from "react-icons/pi";
-import { SlEnergy } from "react-icons/sl";
+import { Atom, ShieldCheck, Server, Rocket, Database, Plug, Zap } from "lucide-react";
 
 // Data
 const data = [
   {
-    icon: <FaReact className="w-7 h-7" />,
+    icon: <Atom className="w-7 h-7" />,
     title: "Next.js & React",
     description:
       "Interface construída com Next.js App Router para SSR/SSG otimizado. Componentes estilizados com Tailwind CSS e baseados no shadcn/ui.",
@@ -22,7 +17,7 @@ const data = [
     glowColor: "hover:shadow-blue-400/20",
   },
   {
-    icon: <FaShieldAlt className="w-7 h-7" />,
+    icon: <ShieldCheck className="w-7 h-7" />,
     title: "Zod Validation",
     description:
       "Validação centralizada e type-safe com Zod. Garante dados estritamente no formato esperado antes de qualquer processamento.",
@@ -30,7 +25,7 @@ const data = [
     glowColor: "hover:shadow-emerald-400/20",
   },
   {
-    icon: <FaServer className="w-7 h-7" />,
+    icon: <Server className="w-7 h-7" />,
     title: "BullMQ + Redis",
     description:
       "Sistema de filas robusto para processamento assíncrono. Desacopla ingestão de processamento, evitando timeouts.",
@@ -38,7 +33,7 @@ const data = [
     glowColor: "hover:shadow-orange-400/20",
   },
   {
-    icon: <SiTurborepo className="w-7 h-7" />,
+    icon: <Rocket className="w-7 h-7" />,
     title: "Turborepo",
     description:
       "Arquitetura Monorepo com Turborepo e PNPM Workspaces. Separação clara entre frontend, backend e pacotes compartilhados.",
@@ -46,7 +41,7 @@ const data = [
     glowColor: "hover:shadow-violet-400/20",
   },
   {
-    icon: <SiPostgresql className="w-7 h-7" />,
+    icon: <Database className="w-7 h-7" />,
     title: "PostgreSQL + Prisma",
     description:
       "ORM type-safe com migrações versionadas para um banco relacional robusto e previsível.",
@@ -54,7 +49,7 @@ const data = [
     glowColor: "hover:shadow-cyan-400/20",
   },
   {
-    icon: <PiPlugsConnectedFill className="w-7 h-7" />,
+    icon: <Plug className="w-7 h-7" />,
     title: "API REST com Express",
     description:
       "Framework Node.js de alta performance com serialização otimizada e plugins modulares.",
@@ -62,7 +57,7 @@ const data = [
     glowColor: "hover:shadow-rose-400/20",
   },
   {
-    icon: <SlEnergy className="w-7 h-7" />,
+    icon: <Zap className="w-7 h-7" />,
     title: "Polling & Real Time",
     description:
       "O frontend consulta o status do processamento periodicamente, refletindo mudanças automaticamente na UI.",

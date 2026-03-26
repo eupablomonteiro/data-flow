@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home, Search } from "lucide-react";
-import { LuDatabaseZap } from "react-icons/lu";
+import { Database } from "lucide-react";
 
 export default function NotFound() {
   return (
@@ -26,7 +26,7 @@ export default function NotFound() {
           className="flex items-center gap-2.5 mb-12 group"
         >
           <div className="relative">
-            <LuDatabaseZap className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5 transition-transform group-hover:scale-110" />
+            <Database className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5 transition-transform group-hover:scale-110" />
             <div className="absolute inset-0 bg-df-accent rounded-lg blur-md opacity-40 group-hover:opacity-60 transition-opacity" />
           </div>
           <h1 className="text-df-white font-bold text-xl">

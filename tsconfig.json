@@ -8,6 +8,6 @@
     { "path": "packages/queue" },
     { "path": "packages/validation" },
     { "path": "apps/api" },
-    { "path": "apps/worker" }
+    { "path": "apps/worker" },
   ]
 }

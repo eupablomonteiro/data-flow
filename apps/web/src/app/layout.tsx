@@ -16,7 +16,14 @@ export const metadata: Metadata = {
   title: "DataFlow — Processamento de Dados em Alta Performance",
   description:
     "Plataforma moderna para upload, processamento assíncrono e visualização de grandes volumes de dados CSV com dashboards interativos.",
-  keywords: ["processamento de dados", "CSV", "dashboard", "analytics", "BullMQ"],
+  keywords: [
+    "processamento de dados",
+    "CSV",
+    "dashboard",
+    "analytics",
+    "BullMQ",
+  ],
+  icons: { icon: "/icon.svg" },
 };
 
 export default function RootLayout({

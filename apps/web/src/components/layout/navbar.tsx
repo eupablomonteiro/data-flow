@@ -1,9 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { LuDatabaseZap } from "react-icons/lu";
+import { Database } from "lucide-react";
 import { Button } from "../ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "../ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "../ui/sheet";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Menu } from "lucide-react";
@@ -58,7 +65,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="relative">
-            <LuDatabaseZap className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5 transition-transform group-hover:scale-110" />
+            <Database className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5 transition-transform group-hover:scale-110" />
             <div className="absolute inset-0 bg-df-accent rounded-lg blur-md opacity-40 group-hover:opacity-60 transition-opacity" />
           </div>
           <h1 className="text-df-light-text font-bold text-xl tracking-tight">
@@ -125,12 +132,14 @@ const Navbar = () => {
           >
             <SheetHeader className="sr-only">
               <SheetTitle>Navegação</SheetTitle>
-              <SheetDescription>Menu de navegação principal do DataFlow</SheetDescription>
+              <SheetDescription>
+                Menu de navegação principal do DataFlow
+              </SheetDescription>
             </SheetHeader>
 
             <div className="flex flex-col gap-6 mt-8">
               <div className="flex items-center gap-2.5 px-2">
-                <LuDatabaseZap className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5" />
+                <Database className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5" />
                 <h2 className="text-df-light-text font-bold text-xl">
                   Data<span className="gradient-text">Flow</span>
                 </h2>

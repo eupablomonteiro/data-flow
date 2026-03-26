@@ -20,8 +20,8 @@ import {
   Settings,
   LogOut,
   ChevronUp,
+  Database,
 } from "lucide-react";
-import { LuDatabaseZap } from "react-icons/lu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -62,7 +62,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4 border-b border-df-surface/15 bg-df-bg-deep">
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="relative">
-            <LuDatabaseZap className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5 transition-transform group-hover:scale-110" />
+            <Database className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5 transition-transform group-hover:scale-110" />
             <div className="absolute inset-0 bg-df-accent rounded-lg blur-md opacity-30" />
           </div>
           <div>

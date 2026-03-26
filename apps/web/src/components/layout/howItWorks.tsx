@@ -2,14 +2,11 @@
 
 import React from "react";
 import { motion, Variants } from "framer-motion";
-import { FaFileCsv } from "react-icons/fa6";
-import { FaServer } from "react-icons/fa6";
-import { FaSpinner } from "react-icons/fa";
-import { GrAnalytics } from "react-icons/gr";
+import { FileSpreadsheet, Server, Loader2, Info } from "lucide-react";
 
 const data = [
   {
-    icon: <FaFileCsv className="text-df-accent text-xl" />,
+    icon: <FileSpreadsheet className="text-df-accent text-xl" />,
     title: "Upload de CSV",
     description:
       "Arraste e solte arquivos pesados. O frontend realiza a validação inicial antes do envio.",
@@ -18,7 +15,7 @@ const data = [
     step: "01",
   },
   {
-    icon: <FaServer className="text-rose-400 text-xl" />,
+    icon: <Server className="text-rose-400 text-xl" />,
     title: "Fila Assíncrona",
     description:
       "O arquivo é enviado para um Worker (BullMQ + Redis) para processamento em background.",
@@ -27,7 +24,7 @@ const data = [
     step: "02",
   },
   {
-    icon: <FaSpinner className="text-emerald-400 text-xl" />,
+    icon: <Loader2 className="text-emerald-400 text-xl animate-spin" />,
     title: "Acompanhamento",
     description:
       "Acompanhe em tempo real o progresso via polling, sem bloquear a interface.",
@@ -36,7 +33,7 @@ const data = [
     step: "03",
   },
   {
-    icon: <GrAnalytics className="text-orange-400 text-xl" />,
+    icon: <Info className="text-orange-400 text-xl" />,
     title: "Visualização",
     description:
       "Acesse as métricas processadas em um dashboard interativo e de alta performance.",
