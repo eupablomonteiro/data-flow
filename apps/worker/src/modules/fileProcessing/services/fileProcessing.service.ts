@@ -2,9 +2,13 @@ import { createCsvStream } from "../../../lib/csvParser";
 import { saleSchema, type SaleType } from "@dataflow/validation";
 import { SaleRepository } from "../repositories/sale.repository";
 import { UploadRepository } from "../repositories/upload.repository";
+import { createLogger } from "@dataflow/logger";
+
+const logger = createLogger("fileProcessing");
 
 const BATCH_SIZE = 500;
-const UPDATE_INTERVAL = 1000;
+const UPDATE_INTERVAL = 5000;
+let lastUpdate = Date.now();
 
 export class FileProcessingService {
   constructor(
@@ -29,24 +33,25 @@ export class FileProcessingService {
       } catch (error) {
         errorRows++;
         if (errorRows <= 10) {
-          console.error("Invalid row:", error);
+          logger.warn({ row: processedRows }, "Invalid row skipped.");
         }
       }
 
       processedRows++;
 
-      if (batch.length >= BATCH_SIZE) {
+      if (processedRows % BATCH_SIZE === 0) {
         await this.saleRepository.createMany(batch);
         batch = [];
       }
 
-      if (processedRows % UPDATE_INTERVAL === 0) {
+      if (Date.now() - lastUpdate >= UPDATE_INTERVAL) {
         await this.uploadRepository.updateMetrics(uploadId, {
           totalRows: processedRows,
           processedRows,
           successRows,
           errorRows,
         });
+        lastUpdate = Date.now();
       }
     }
 

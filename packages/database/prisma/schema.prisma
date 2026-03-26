@@ -44,6 +44,9 @@ model Sale {
   @@index([product])
   @@index([category])
   @@index([country])
+  @@index([date, category])
+  @@index([country, date])
+  @@index([product, quantity])
 }
 
 model Upload {

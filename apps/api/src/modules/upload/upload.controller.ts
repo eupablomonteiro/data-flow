@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { CreateUploadService, GetUploadService } from "./upload.service";
 import { UploadPresenter } from "./upload.presenter";
+import { z } from "zod";
+
+const uuidSchema = z.string().uuid();
 
 export class UploadController {
   constructor(
@@ -19,7 +22,13 @@ export class UploadController {
 
   getById = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const upload = await this.getService.getById(id as string);
+    const parsed = uuidSchema.safeParse(id);
+
+    if (!parsed.success) {
+      return res.status(400).json({ error: "Invalid ID format" });
+    }
+
+    const upload = await this.getService.getById(parsed.data);
     return res.json(UploadPresenter.toHTTP(upload));
   };
 

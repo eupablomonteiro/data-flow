@@ -5,12 +5,12 @@ type LoggerConfig = {
   logLevel: string;
 };
 
-export const createLogger = (serviceName: string, config: LoggerConfig) => {
-  const isDevelopment = config.nodeEnv === "development";
+export const createLogger = (serviceName: string, config?: LoggerConfig) => {
+  const isDevelopment = config?.nodeEnv === "development";
 
   return pino({
     name: serviceName,
-    level: config.logLevel,
+    level: config?.logLevel ?? "info",
     transport: isDevelopment
       ? {
           target: "pino-pretty",
