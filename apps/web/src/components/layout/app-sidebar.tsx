@@ -22,7 +22,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { LuDatabaseZap } from "react-icons/lu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Route } from "next";
@@ -123,6 +123,7 @@ export function AppSidebar() {
       <SidebarFooter className="p-3 border-t border-df-surface/15 bg-df-bg-deep">
         <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-df-surface/15 transition-colors cursor-pointer">
           <Avatar className="w-8 h-8">
+            <AvatarImage src={user?.avatarUrl || undefined} />
             <AvatarFallback className="bg-df-accent/20 text-df-accent text-xs font-bold uppercase">
               {user?.name?.substring(0, 2) ||
                 user?.email?.substring(0, 2) ||

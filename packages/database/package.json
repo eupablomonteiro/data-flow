@@ -23,7 +23,7 @@
     "build": "prisma generate && tsc -b --force",
     "dev": "prisma generate && tsc -b -w --preserveWatchOutput",
     "generate": "prisma generate",
-    "migrate": "prisma migrate dev",
+    "migrate": "dotenv -e ../../.env -- prisma migrate dev",
     "studio": "prisma studio"
   },
   "dependencies": {
@@ -34,6 +34,7 @@
     "prisma": "^7.5.0"
   },
   "devDependencies": {
-    "@types/pg": "^8.15.6"
+    "@types/pg": "^8.15.6",
+    "dotenv-cli": "^11.0.0"
   }
 }

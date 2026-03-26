@@ -11,7 +11,7 @@ export class AuthRepository {
 
   async findByGithubId(githubId: string) {
     return this.prisma.user.findUnique({
-      where: { githubId },
+      where: { githubId }
     });
   }
 
@@ -22,6 +22,7 @@ export class AuthRepository {
         id: true,
         name: true,
         email: true,
+        avatarUrl: true,
         githubId: true,
         googleId: true,
         createdAt: true,
@@ -34,10 +35,11 @@ export class AuthRepository {
     name: string;
     githubId?: string;
     googleId?: string;
+    avatarUrl?: string;
   }) {
     return this.prisma.user.upsert({
       where: { email: data.email },
-      update: { githubId: data.githubId, googleId: data.googleId },
+      update: { githubId: data.githubId, googleId: data.googleId, avatarUrl: data.avatarUrl },
       create: data,
     });
   }

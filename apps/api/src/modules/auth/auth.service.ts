@@ -37,7 +37,7 @@ export class AuthService {
         headers: { Authorization: `Bearer ${access_token}` },
       });
 
-      const { id, email, name, login } = userResponse.data;
+      const { id, email, name, login, avatar_url: avatarUrl } = userResponse.data;
 
       const userEmail = email || `${login}@github.com`;
 
@@ -45,6 +45,7 @@ export class AuthService {
         email: userEmail,
         name: name || login,
         githubId: String(id),
+        avatarUrl,
       });
 
       const token = SecurityUtils.signToken({
@@ -80,12 +81,13 @@ export class AuthService {
         },
       );
 
-      const { id, email, name } = userResponse.data;
+      const { id, email, name, picture: avatarUrl } = userResponse.data;
 
       const user = await this.authRepository.createOAuthUser({
         email,
         name,
         googleId: id,
+        avatarUrl,
       });
 
       const token = SecurityUtils.signToken({
