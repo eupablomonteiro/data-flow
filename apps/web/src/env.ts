@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "@dataflow/config";
 
 const envSchema = z.object({
   NEXT_PUBLIC_API_URL: z.string().url(),

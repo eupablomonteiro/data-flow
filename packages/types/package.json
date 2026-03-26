@@ -17,8 +17,6 @@
   "scripts": {
     "build": "tsc -b --force"
   },
-  "dependencies": {
-    "zod": "^3.23.8"
-  },
+  "dependencies": {},
   "devDependencies": {}
 }

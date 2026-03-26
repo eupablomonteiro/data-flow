@@ -1,5 +1,5 @@
-import { LuDatabaseZap } from "react-icons/lu";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { Database } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/brand-icons";
 import Link from "next/link";
 
 const techStack = [
@@ -21,7 +21,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="flex flex-col gap-4">
             <Link href="/" className="flex items-center gap-2.5">
-              <LuDatabaseZap className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5" />
+              <Database className="w-8 h-8 text-white bg-df-accent rounded-lg p-1.5" />
               <h3 className="text-df-white font-bold text-xl">
                 Data<span className="gradient-text">Flow</span>
               </h3>
@@ -35,17 +35,17 @@ export default function Footer() {
                 href="https://github.com/eupablomonteiro"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-df-surface/30 flex items-center justify-center text-df-muted hover:text-df-white hover:bg-df-accent/20 transition-all"
+                className="w-6 h-6 rounded-lg bg-df-surface/30 flex items-center justify-center text-df-muted hover:text-df-white hover:bg-df-accent/20 transition-all"
               >
-                <FaGithub className="text-lg" />
+                <GithubIcon className="text-sm" />
               </a>
               <a
                 href="https://www.linkedin.com/in/eupablomonteiro/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-df-surface/30 flex items-center justify-center text-df-muted hover:text-df-white hover:bg-df-accent/20 transition-all"
+                className="w-6 h-6 rounded-lg bg-df-surface/30 flex items-center justify-center text-df-muted hover:text-df-white hover:bg-df-accent/20 transition-all"
               >
-                <FaLinkedin className="text-lg" />
+                <LinkedinIcon className="text-sm" />
               </a>
             </div>
           </div>

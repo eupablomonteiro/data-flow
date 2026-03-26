@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { FaGithub, FaGoogle } from "react-icons/fa";
+import { GithubIcon, GoogleIcon } from "@/components/ui/brand-icons";
 import { env } from "@/env";
 
 type OAuthButtonsProps = {
@@ -64,7 +64,7 @@ export function OAuthButtons({
           {isLoadingGithub ? (
             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
           ) : (
-            <FaGithub className="mr-2 h-5 w-5" />
+            <GithubIcon className="mr-2 h-5 w-5" />
           )}
           {label} com GitHub
         </Button>
@@ -79,7 +79,7 @@ export function OAuthButtons({
           {isLoadingGoogle ? (
             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
           ) : (
-            <FaGoogle className="mr-2 h-5 w-5 text-red-500" />
+            <GoogleIcon className="mr-2 h-5 w-5" />
           )}
           {label} com Google
         </Button>

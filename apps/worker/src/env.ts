@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import path from "path";
-import { z } from "zod";
+import { z } from "@dataflow/config";
 import {
   baseEnvSchema,
   databaseEnvSchema,

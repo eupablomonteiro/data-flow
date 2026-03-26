@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect x="0" y="0" width="512" height="512" rx="96" fill="#6366F1"/>
+  
+  <!-- Database Icon (centered, white) -->
+  <ellipse cx="256" cy="160" rx="140" ry="45" fill="none" stroke="white" stroke-width="28"/>
+  <path d="M116 160 L116 320 Q116 365 256 365 Q396 365 396 320 L396 160" fill="none" stroke="white" stroke-width="28" stroke-linecap="round"/>
+  <ellipse cx="256" cy="225" rx="140" ry="45" fill="none" stroke="white" stroke-width="20" opacity="0.5"/>
+  <ellipse cx="256" cy="290" rx="140" ry="45" fill="none" stroke="white" stroke-width="20" opacity="0.5"/>
+</svg>
