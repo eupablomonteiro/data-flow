@@ -1,6 +1,7 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { CreateUploadService, GetUploadService } from "./upload.service";
 import { UploadPresenter } from "./upload.presenter";
+import { AuthenticatedRequest } from "../../middleware/auth.middleware";
 import { z } from "@dataflow/config";
 
 const uuidSchema = z.string().uuid();
@@ -11,16 +12,17 @@ export class UploadController {
     private getService = new GetUploadService(),
   ) {}
 
-  create = async (req: Request, res: Response) => {
+  create = async (req: AuthenticatedRequest, res: Response) => {
     if (!req.file) {
       return res.status(400).json({ error: "file is required" });
     }
 
-    const result = await this.createService.execute(req.file);
+    const userId = req.user.sub;
+    const result = await this.createService.execute(req.file, userId);
     return res.status(201).json(result);
   };
 
-  getById = async (req: Request, res: Response) => {
+  getById = async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
     const parsed = uuidSchema.safeParse(id);
 
@@ -28,12 +30,14 @@ export class UploadController {
       return res.status(400).json({ error: "Invalid ID format" });
     }
 
-    const upload = await this.getService.getById(parsed.data);
+    const userId = req.user.sub;
+    const upload = await this.getService.getById(parsed.data, userId);
     return res.json(UploadPresenter.toHTTP(upload));
   };
 
-  getAll = async (req: Request, res: Response) => {
-    const uploads = await this.getService.getAll();
+  getAll = async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.user.sub;
+    const uploads = await this.getService.getAll(userId);
 
     return res.json(UploadPresenter.toHTTPList(uploads));
   };

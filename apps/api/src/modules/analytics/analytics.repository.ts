@@ -2,8 +2,11 @@ import { getPrisma } from "@dataflow/database";
 import { SalesPerDay } from "@dataflow/types";
 
 export class AnalyticsRepository {
-  async getTotalRevenue() {
+  async getTotalRevenue(userId: string) {
     const result = await getPrisma().sale.aggregate({
+      where: {
+        upload: { userId },
+      },
       _sum: {
         total: true,
       },
@@ -12,22 +15,32 @@ export class AnalyticsRepository {
     return result._sum.total ?? 0;
   }
 
-  async getTotalSales() {
-    return getPrisma().sale.count();
+  async getTotalSales(userId: string) {
+    return getPrisma().sale.count({
+      where: {
+        upload: { userId },
+      },
+    });
   }
 
-  async revenueByCountry() {
+  async revenueByCountry(userId: string) {
     return getPrisma().sale.groupBy({
       by: ["country"],
+      where: {
+        upload: { userId },
+      },
       _sum: {
         total: true,
       },
     });
   }
 
-  async topProducts() {
+  async topProducts(userId: string) {
     return getPrisma().sale.groupBy({
       by: ["product"],
+      where: {
+        upload: { userId },
+      },
       _sum: {
         quantity: true,
       },
@@ -40,17 +53,27 @@ export class AnalyticsRepository {
     });
   }
 
-  async salesPerDay(): Promise<SalesPerDay[]> {
-    return getPrisma().$queryRawUnsafe(`
-        SELECT DATE("date") as date,
-        SUM(total) as total
-        FROM "Sale" GROUP BY DATE("date") ORDER BY date ASC
-      `);
+  async salesPerDay(userId: string): Promise<SalesPerDay[]> {
+    return getPrisma().$queryRawUnsafe(
+      `
+        SELECT DATE(s."date") as date,
+        SUM(s."total") as total
+        FROM "Sale" s
+        INNER JOIN "Upload" u ON s."uploadId" = u."id"
+        WHERE u."userId" = $1
+        GROUP BY DATE(s."date")
+        ORDER BY date ASC
+      `,
+      userId,
+    );
   }
 
-  async categoryPerformance() {
+  async categoryPerformance(userId: string) {
     return getPrisma().sale.groupBy({
       by: ["category"],
+      where: {
+        upload: { userId },
+      },
       _sum: {
         total: true,
       },

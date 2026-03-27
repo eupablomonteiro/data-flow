@@ -6,12 +6,13 @@ import { AppError } from "../../errors/AppError";
 export class CreateUploadService {
   constructor(private repository = new UploadRepository()) {}
 
-  async execute(file: Express.Multer.File) {
+  async execute(file: Express.Multer.File, userId: string) {
     const absolutePath = path.resolve(file.path);
 
     const upload = await this.repository.create({
       filename: file.filename,
       filepath: absolutePath,
+      userId,
     });
 
     const job = await getFileProcessingQueue().add("fileProcessingJob", {
@@ -30,8 +31,8 @@ export class CreateUploadService {
 export class GetUploadService {
   private uploadRepository = new UploadRepository();
 
-  async getById(id: string) {
-    const upload = await this.uploadRepository.findById(id);
+  async getById(id: string, userId: string) {
+    const upload = await this.uploadRepository.findByIdAndUserId(id, userId);
 
     if (!upload) {
       throw new AppError("Upload not found.", 404);
@@ -40,8 +41,8 @@ export class GetUploadService {
     return upload;
   }
 
-  async getAll() {
-    const uploads = await this.uploadRepository.findAll();
+  async getAll(userId: string) {
+    const uploads = await this.uploadRepository.findAllByUserId(userId);
     return uploads;
   }
 }

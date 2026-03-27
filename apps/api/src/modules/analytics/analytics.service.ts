@@ -4,7 +4,7 @@ import { AnalyticsResponseDTO } from "@dataflow/types";
 export class AnalyticsService {
   constructor(private repo = new AnalyticsRepository()) {}
 
-  async execute(): Promise<AnalyticsResponseDTO> {
+  async execute(userId: string): Promise<AnalyticsResponseDTO> {
     const [
       totalRevenue,
       totalSales,
@@ -13,12 +13,12 @@ export class AnalyticsService {
       salesPerDay,
       categoryPerformance,
     ] = await Promise.all([
-      this.repo.getTotalRevenue(),
-      this.repo.getTotalSales(),
-      this.repo.revenueByCountry(),
-      this.repo.topProducts(),
-      this.repo.salesPerDay(),
-      this.repo.categoryPerformance(),
+      this.repo.getTotalRevenue(userId),
+      this.repo.getTotalSales(userId),
+      this.repo.revenueByCountry(userId),
+      this.repo.topProducts(userId),
+      this.repo.salesPerDay(userId),
+      this.repo.categoryPerformance(userId),
     ]);
 
     return {

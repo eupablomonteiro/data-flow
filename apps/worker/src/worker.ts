@@ -45,9 +45,16 @@ async function bootstrap() {
         const service = new FileProcessingService();
         const result = await service.execute(job.data.path, uploadId);
 
-        await uploadRepository.markCompleted(uploadId);
-
-        logger.info(result, "Processing completed");
+        if (result.totalRows > 0 && result.successRows === 0) {
+          await uploadRepository.markFailed(uploadId);
+          logger.warn(
+            { uploadId, errorRows: result.errorRows, totalRows: result.totalRows },
+            "All rows failed validation — upload marked as FAILED",
+          );
+        } else {
+          await uploadRepository.markCompleted(uploadId);
+          logger.info(result, "Processing completed");
+        }
       } catch (error) {
         await uploadRepository.markFailed(uploadId);
         logger.error(error, "Processing failed");

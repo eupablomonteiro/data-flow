@@ -24,7 +24,8 @@
     "dev": "prisma generate && tsc -b -w --preserveWatchOutput",
     "generate": "prisma generate",
     "migrate": "dotenv -e ../../.env -- prisma migrate dev",
-    "studio": "prisma studio"
+    "studio": "dotenv -e ../../.env -- prisma studio",
+    "db:push": "dotenv -e ../../.env -- prisma db push"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.5.0",

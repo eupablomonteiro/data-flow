@@ -23,6 +23,8 @@ model User {
   googleId     String?  @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  uploads Upload[]
 }
 
 model Sale {
@@ -63,6 +65,11 @@ model Upload {
   startedAt   DateTime?
   processedAt DateTime?
 
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   sales     Sale[]
+
+  @@index([userId])
 }

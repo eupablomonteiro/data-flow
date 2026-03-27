@@ -1,10 +1,17 @@
 import { Request, Response, NextFunction } from "express";
 import { SecurityUtils } from "../common/utils/security";
 
+export interface AuthenticatedRequest extends Request {
+  user: {
+    sub: string;
+    email: string;
+  };
+}
+
 declare global {
   namespace Express {
     interface Request {
-      user?: {
+      user: {
         sub: string;
         email: string;
       };

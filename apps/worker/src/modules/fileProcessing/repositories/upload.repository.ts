@@ -11,14 +11,20 @@ export class UploadRepository {
   async markCompleted(id: string) {
     await getPrisma().upload.update({
       where: { id },
-      data: { status: UploadStatus.COMPLETED },
+      data: {
+        status: UploadStatus.COMPLETED,
+        processedAt: new Date(),
+      },
     });
   }
 
   async markFailed(id: string) {
     await getPrisma().upload.update({
       where: { id },
-      data: { status: UploadStatus.FAILED },
+      data: {
+        status: UploadStatus.FAILED,
+        processedAt: new Date(),
+      },
     });
   }
 

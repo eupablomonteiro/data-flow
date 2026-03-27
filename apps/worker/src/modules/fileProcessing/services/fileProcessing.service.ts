@@ -8,9 +8,21 @@ const logger = createLogger("fileProcessing");
 
 const BATCH_SIZE = 500;
 const UPDATE_INTERVAL = 5000;
-let lastUpdate = Date.now();
+
+function isZodError(
+  err: unknown,
+): err is { issues: { path: (string | number)[]; message: string }[] } {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "issues" in err &&
+    Array.isArray((err as { issues: unknown }).issues)
+  );
+}
 
 export class FileProcessingService {
+  private lastUpdate = Date.now();
+
   constructor(
     private saleRepository = new SaleRepository(),
     private uploadRepository = new UploadRepository(),
@@ -33,30 +45,40 @@ export class FileProcessingService {
       } catch (error) {
         errorRows++;
         if (errorRows <= 10) {
-          logger.warn({ row: processedRows }, "Invalid row skipped.");
+          if (isZodError(error)) {
+            const issues = error.issues
+              .map((i) => `${i.path.join(".")}: ${i.message}`)
+              .join(", ");
+            logger.warn(
+              { row: processedRows + 1, issues },
+              "Invalid row skipped.",
+            );
+          } else {
+            logger.warn({ row: processedRows + 1 }, "Invalid row skipped.");
+          }
         }
       }
 
       processedRows++;
 
       if (processedRows % BATCH_SIZE === 0) {
-        await this.saleRepository.createMany(batch);
+        await this.saleRepository.createMany(batch, uploadId);
         batch = [];
       }
 
-      if (Date.now() - lastUpdate >= UPDATE_INTERVAL) {
+      if (Date.now() - this.lastUpdate >= UPDATE_INTERVAL) {
         await this.uploadRepository.updateMetrics(uploadId, {
           totalRows: processedRows,
           processedRows,
           successRows,
           errorRows,
         });
-        lastUpdate = Date.now();
+        this.lastUpdate = Date.now();
       }
     }
 
     if (batch.length > 0) {
-      await this.saleRepository.createMany(batch);
+      await this.saleRepository.createMany(batch, uploadId);
     }
 
     await this.uploadRepository.updateMetrics(uploadId, {
