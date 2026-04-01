@@ -33,4 +33,14 @@ export class UploadRepository {
       where: { userId },
     });
   }
+
+  async findErrorsById(
+    id: string,
+  ): Promise<Array<{ row: number; errors: string[] }> | null> {
+    const upload = await getPrisma().upload.findUnique({
+      where: { id },
+      select: { errors: true },
+    });
+    return upload?.errors as Array<{ row: number; errors: string[] }> | null;
+  }
 }

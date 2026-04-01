@@ -1,7 +1,7 @@
 export type UploadResponseDTO = {
   id: string;
   filename: string;
-  status: "PENDING" | "PROCESSING" | "COMPLETED" | "FAILED";
+  status: "PENDING" | "PROCESSING" | "COMPLETED" | "PARTIAL" | "FAILED";
 
   progress: {
     totalRows?: number | null;
@@ -18,4 +18,15 @@ export type UploadResponseDTO = {
 export type CreateUploadResponseDTO = {
   uploadId: string;
   jobId: string;
+};
+
+export type UploadErrorDTO = {
+  row: number;
+  errors: string[];
+};
+
+export type UploadErrorsResponseDTO = {
+  uploadId: string;
+  totalErrors: number;
+  errors: UploadErrorDTO[];
 };

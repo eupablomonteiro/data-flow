@@ -1,5 +1,9 @@
 import { Response } from "express";
-import { CreateUploadService, GetUploadService } from "./upload.service";
+import {
+  CreateUploadService,
+  GetUploadService,
+  GetUploadErrorsService,
+} from "./upload.service";
 import { UploadPresenter } from "./upload.presenter";
 import { AuthenticatedRequest } from "../../middleware/auth.middleware";
 import { z } from "@dataflow/config";
@@ -10,6 +14,7 @@ export class UploadController {
   constructor(
     private createService = new CreateUploadService(),
     private getService = new GetUploadService(),
+    private getErrorsService = new GetUploadErrorsService(),
   ) {}
 
   create = async (req: AuthenticatedRequest, res: Response) => {
@@ -33,6 +38,19 @@ export class UploadController {
     const userId = req.user.sub;
     const upload = await this.getService.getById(parsed.data, userId);
     return res.json(UploadPresenter.toHTTP(upload));
+  };
+
+  getErrors = async (req: AuthenticatedRequest, res: Response) => {
+    const { id } = req.params;
+    const parsed = uuidSchema.safeParse(id);
+
+    if (!parsed.success) {
+      return res.status(400).json({ error: "Invalid ID format" });
+    }
+
+    const userId = req.user.sub;
+    const errors = await this.getErrorsService.execute(parsed.data, userId);
+    return res.json(errors);
   };
 
   getAll = async (req: AuthenticatedRequest, res: Response) => {

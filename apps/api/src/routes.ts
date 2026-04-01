@@ -23,6 +23,7 @@ router.post(
   uploadController.create,
 );
 router.get("/uploads/:id", authMiddleware, uploadController.getById);
+router.get("/uploads/:id/errors", authMiddleware, uploadController.getErrors);
 router.get("/uploads", authMiddleware, uploadController.getAll);
 router.get("/analytics", authMiddleware, analyticsController.handle);
 

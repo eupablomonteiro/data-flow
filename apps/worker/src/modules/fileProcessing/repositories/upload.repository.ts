@@ -18,13 +18,61 @@ export class UploadRepository {
     });
   }
 
-  async markFailed(id: string) {
+  async markFailed(
+    id: string,
+    metrics: {
+      totalRows: number;
+      processedRows: number;
+      successRows: number;
+      errorRows: number;
+      errors?: Array<{ row: number; errors: string[] }>;
+    },
+  ) {
     await getPrisma().upload.update({
       where: { id },
       data: {
         status: UploadStatus.FAILED,
         processedAt: new Date(),
+        totalRows: metrics.totalRows,
+        processedRows: metrics.processedRows,
+        successRows: metrics.successRows,
+        errorRows: metrics.errorRows,
+        errors: metrics.errors ?? [],
       },
+    });
+  }
+
+  async markPartial(
+    id: string,
+    metrics: {
+      totalRows: number;
+      processedRows: number;
+      successRows: number;
+      errorRows: number;
+      errors?: Array<{ row: number; errors: string[] }>;
+    },
+  ) {
+    await getPrisma().upload.update({
+      where: { id },
+      data: {
+        status: UploadStatus.PARTIAL,
+        processedAt: new Date(),
+        totalRows: metrics.totalRows,
+        processedRows: metrics.processedRows,
+        successRows: metrics.successRows,
+        errorRows: metrics.errorRows,
+        errors: metrics.errors ?? [],
+      },
+    });
+  }
+
+  async addErrors(
+    id: string,
+    errors: Array<{ row: number; errors: string[] }>,
+  ) {
+    await getPrisma().upload.update({
+      where: { id },
+      data: { errors },
     });
   }
 

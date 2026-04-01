@@ -50,6 +50,9 @@ importers:
       '@dataflow/types':
         specifier: workspace:*
         version: link:../../packages/types
+      '@dataflow/validation':
+        specifier: workspace:*
+        version: link:../../packages/validation
       argon2:
         specifier: ^0.44.0
         version: 0.44.0

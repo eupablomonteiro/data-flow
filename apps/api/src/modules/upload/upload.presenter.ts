@@ -1,6 +1,8 @@
 import { Upload } from "@dataflow/database";
 import type { UploadResponseDTO } from "@dataflow/types";
 
+type UploadStatusType = "PENDING" | "PROCESSING" | "COMPLETED" | "PARTIAL" | "FAILED";
+
 export class UploadPresenter {
   static toHTTP(upload: Upload): UploadResponseDTO {
     const percentage =
@@ -11,7 +13,7 @@ export class UploadPresenter {
     return {
       id: upload.id,
       filename: upload.filename,
-      status: upload.status,
+      status: upload.status as UploadStatusType,
       progress: {
         totalRows: upload.totalRows,
         processedRows: upload.processedRows,

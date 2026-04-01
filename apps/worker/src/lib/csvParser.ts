@@ -6,6 +6,8 @@ export function createCsvStream(filePath: string) {
     parse({
       columns: true,
       trim: true,
+      relax_column_count: true,
+      skip_empty_lines: true,
     }),
   );
 }

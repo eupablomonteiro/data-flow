@@ -7,7 +7,7 @@ import { createLogger } from "@dataflow/logger";
 const logger = createLogger("fileProcessing");
 
 const BATCH_SIZE = 500;
-const UPDATE_INTERVAL = 5000;
+const MAX_ERRORS_TO_STORE = 100;
 
 function isZodError(
   err: unknown,
@@ -20,9 +20,12 @@ function isZodError(
   );
 }
 
-export class FileProcessingService {
-  private lastUpdate = Date.now();
+interface ValidationError {
+  row: number;
+  errors: string[];
+}
 
+export class FileProcessingService {
   constructor(
     private saleRepository = new SaleRepository(),
     private uploadRepository = new UploadRepository(),
@@ -35,6 +38,7 @@ export class FileProcessingService {
     let processedRows = 0;
     let successRows = 0;
     let errorRows = 0;
+    const errors: ValidationError[] = [];
 
     for await (const row of stream) {
       try {
@@ -44,18 +48,28 @@ export class FileProcessingService {
         successRows++;
       } catch (error) {
         errorRows++;
+
+        const rowNumber = processedRows + 1;
+        let errorMessages: string[] = [];
+
+        if (isZodError(error)) {
+          errorMessages = error.issues.map(
+            (i) => `${i.path.join(".")}: ${i.message}`,
+          );
+        }
+
+        if (errors.length < MAX_ERRORS_TO_STORE) {
+          errors.push({
+            row: rowNumber,
+            errors: errorMessages,
+          });
+        }
+
         if (errorRows <= 10) {
-          if (isZodError(error)) {
-            const issues = error.issues
-              .map((i) => `${i.path.join(".")}: ${i.message}`)
-              .join(", ");
-            logger.warn(
-              { row: processedRows + 1, issues },
-              "Invalid row skipped.",
-            );
-          } else {
-            logger.warn({ row: processedRows + 1 }, "Invalid row skipped.");
-          }
+          logger.warn(
+            { row: rowNumber, issues: errorMessages.join(", ") },
+            "Invalid row skipped.",
+          );
         }
       }
 
@@ -64,16 +78,13 @@ export class FileProcessingService {
       if (processedRows % BATCH_SIZE === 0) {
         await this.saleRepository.createMany(batch, uploadId);
         batch = [];
-      }
 
-      if (Date.now() - this.lastUpdate >= UPDATE_INTERVAL) {
         await this.uploadRepository.updateMetrics(uploadId, {
           totalRows: processedRows,
           processedRows,
           successRows,
           errorRows,
         });
-        this.lastUpdate = Date.now();
       }
     }
 
@@ -88,11 +99,16 @@ export class FileProcessingService {
       totalRows: processedRows,
     });
 
+    if (errors.length > 0) {
+      await this.uploadRepository.addErrors(uploadId, errors);
+    }
+
     return {
       processedRows,
       successRows,
       errorRows,
       totalRows: processedRows,
+      errors,
     };
   }
 }

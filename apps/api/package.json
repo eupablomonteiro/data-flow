@@ -19,6 +19,7 @@
     "@dataflow/logger": "workspace:*",
     "@dataflow/queue": "workspace:*",
     "@dataflow/types": "workspace:*",
+    "@dataflow/validation": "workspace:*",
     "argon2": "^0.44.0",
     "axios": "^1.13.6",
     "cookie-parser": "^1.4.7",

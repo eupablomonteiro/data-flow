@@ -28,18 +28,28 @@ export class AuthController {
     const { code } = req.query;
     if (!code) throw new AppError("Code not provided.", 400);
 
-    const { token } = await this.authService.validateGithubUser(code as string);
-    this.setAuthCookie(res, token);
-    return res.redirect(`${env.AUTH_REDIRECT_URL}/dashboard`);
+    try {
+      const { token } = await this.authService.validateGithubUser(code as string);
+      this.setAuthCookie(res, token);
+      return res.redirect(`${env.AUTH_REDIRECT_URL}/dashboard`);
+    } catch (error) {
+      const message = error instanceof AppError ? error.message : "Authentication failed";
+      return res.redirect(`${env.AUTH_REDIRECT_URL}/?auth_error=${encodeURIComponent(message)}`);
+    }
   }
 
   async googleCallback(req: Request, res: Response) {
     const { code } = req.query;
     if (!code) throw new AppError("Code not provided.", 400);
 
-    const { token } = await this.authService.validateGoogleUser(code as string);
-    this.setAuthCookie(res, token);
-    return res.redirect(`${env.AUTH_REDIRECT_URL}/dashboard`);
+    try {
+      const { token } = await this.authService.validateGoogleUser(code as string);
+      this.setAuthCookie(res, token);
+      return res.redirect(`${env.AUTH_REDIRECT_URL}/dashboard`);
+    } catch (error) {
+      const message = error instanceof AppError ? error.message : "Authentication failed";
+      return res.redirect(`${env.AUTH_REDIRECT_URL}/?auth_error=${encodeURIComponent(message)}`);
+    }
   }
 
   async logout(_req: Request, res: Response) {

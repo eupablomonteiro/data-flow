@@ -46,17 +46,46 @@ async function bootstrap() {
         const result = await service.execute(job.data.path, uploadId);
 
         if (result.totalRows > 0 && result.successRows === 0) {
-          await uploadRepository.markFailed(uploadId);
+          await uploadRepository.markFailed(uploadId, {
+            totalRows: result.totalRows,
+            processedRows: result.processedRows,
+            successRows: result.successRows,
+            errorRows: result.errorRows,
+            errors: result.errors,
+          });
           logger.warn(
             { uploadId, errorRows: result.errorRows, totalRows: result.totalRows },
             "All rows failed validation — upload marked as FAILED",
+          );
+        } else if (result.errorRows > 0) {
+          await uploadRepository.markPartial(uploadId, {
+            totalRows: result.totalRows,
+            processedRows: result.processedRows,
+            successRows: result.successRows,
+            errorRows: result.errorRows,
+            errors: result.errors,
+          });
+          logger.info(
+            { uploadId, successRows: result.successRows, errorRows: result.errorRows },
+            "Partial success — some rows failed validation",
           );
         } else {
           await uploadRepository.markCompleted(uploadId);
           logger.info(result, "Processing completed");
         }
       } catch (error) {
-        await uploadRepository.markFailed(uploadId);
+        await uploadRepository.markFailed(uploadId, {
+          totalRows: 0,
+          processedRows: 0,
+          successRows: 0,
+          errorRows: 0,
+          errors: [
+            {
+              row: 0,
+              errors: [`Erro interno: ${(error as Error).message}`],
+            },
+          ],
+        });
         logger.error(error, "Processing failed");
         throw error;
       }

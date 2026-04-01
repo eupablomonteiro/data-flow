@@ -29,19 +29,20 @@ export function UploadModal() {
 
   const percentage = uploadData?.progress?.percentage ?? 0;
   const isCompleted = uploadData?.status === "COMPLETED";
+  const isPartial = uploadData?.status === "PARTIAL";
   const isFailed = uploadData?.status === "FAILED";
   const hasErrors =
-    (uploadData?.progress?.errorRows ?? 0) > 0 && isCompleted;
+    (uploadData?.progress?.errorRows ?? 0) > 0 && (isCompleted || isPartial);
 
   const analyticsInvalidated = useRef(false);
 
   useEffect(() => {
-    if ((isCompleted || isFailed) && !analyticsInvalidated.current) {
+    if ((isCompleted || isFailed || isPartial) && !analyticsInvalidated.current) {
       analyticsInvalidated.current = true;
       queryClient.invalidateQueries({ queryKey: ["analytics"] });
       queryClient.invalidateQueries({ queryKey: ["uploads"] });
     }
-  }, [isCompleted, isFailed, queryClient]);
+  }, [isCompleted, isFailed, isPartial, queryClient]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -233,7 +234,7 @@ export function UploadModal() {
               >
                 {/* Progress display */}
                 <div className="rounded-xl bg-df-bg-secondary border border-df-surface/20 p-6 text-center">
-                  {isCompleted ? (
+                  {isCompleted || isPartial ? (
                     <div className="flex flex-col items-center gap-3">
                       <div
                         className={`w-16 h-16 rounded-full flex items-center justify-center ${
@@ -247,16 +248,18 @@ export function UploadModal() {
                         )}
                       </div>
                       <p className="text-df-white font-semibold">
-                        {hasErrors
-                          ? "Concluído com erros"
-                          : "Processamento concluído!"}
+                        {isPartial
+                          ? "Processamento parcial"
+                          : hasErrors
+                            ? "Concluído com erros"
+                            : "Processamento concluído!"}
                       </p>
                       <div className="flex items-center gap-3 text-sm">
                         <span className="text-df-success">
                           {uploadData?.progress.successRows ?? 0} importados
                         </span>
                         {(uploadData?.progress.errorRows ?? 0) > 0 && (
-                          <span className="text-df-error">
+                          <span className="text-df-warning">
                             {uploadData?.progress.errorRows} com erro
                           </span>
                         )}
@@ -326,7 +329,7 @@ export function UploadModal() {
                 </div>
 
                 {/* Action buttons */}
-                {(isCompleted || isFailed) && (
+                {(isCompleted || isFailed || isPartial) && (
                   <div className="flex gap-3">
                     <Button
                       onClick={handleReset}

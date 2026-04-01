@@ -13,7 +13,9 @@ export function useUpload(id: string) {
       if (!data) return 2000;
 
       const isFinished =
-        data.status === "COMPLETED" || data.status === "FAILED";
+        data.status === "COMPLETED" ||
+        data.status === "FAILED" ||
+        data.status === "PARTIAL";
 
       return isFinished ? false : 2000;
     },

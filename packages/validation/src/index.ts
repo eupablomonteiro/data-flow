@@ -1,2 +1,2 @@
-export * from "./sales/sale.schema";
+export * from "./sales";
 export * from "./analytics/analytics.schema";

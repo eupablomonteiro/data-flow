@@ -10,6 +10,7 @@ enum UploadStatus {
   PENDING
   PROCESSING
   COMPLETED
+  PARTIAL
   FAILED
 }
 
@@ -62,11 +63,13 @@ model Upload {
   successRows   Int?
   errorRows     Int?
 
+  errors Json?
+
   startedAt   DateTime?
   processedAt DateTime?
 
-  userId   String
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   sales     Sale[]
