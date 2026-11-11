@@ -7,7 +7,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.32.1",
   "scripts": {
-    "dev": "set NODE_OPTIONS=--conditions=development && tsx scripts/dev.ts",
+    "dev": "turbo run dev",
     "build": "turbo run build",
     "start": "turbo run start",
     "lint": "turbo run lint"

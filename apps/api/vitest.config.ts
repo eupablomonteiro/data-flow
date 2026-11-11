@@ -8,6 +8,12 @@ export default defineConfig({
     setupFiles: ["./__tests__/helpers/setup.ts"],
     include: ["__tests__/**/*.test.ts"],
     testTimeout: 15000,
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "text-summary"],
+      include: ["src/**/*.ts"],
+      exclude: ["src/generated/**"],
+    },
   },
   resolve: {
     alias: {
